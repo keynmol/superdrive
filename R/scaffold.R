@@ -32,7 +32,7 @@ scaffold <- function(path, use_the_force = F) {
 
   if(loader_file$size == 0 || use_the_force){
     loader <- file(paste0(path, "/includes/loader.R"))
-    writeLines(c("## LOAD LIBRARIES", 'source("include/libraries.R")', "## LOAD USER FUNCTIONS", 'source("include/functions.R")', "## LOAD DATA", 'source("include/data.R")'), con = loader)
+    writeLines(c("## LOAD LIBRARIES", 'source("includes/libraries.R")', "## LOAD USER FUNCTIONS", 'source("includes/functions.R")', "## LOAD DATA", 'source("includes/data.R")'), con = loader)
   } else{
     warning("includes/loader.R in target project was not empty, pinky tried to overwrite it but we stopped him")
   }
