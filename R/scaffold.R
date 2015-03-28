@@ -18,11 +18,15 @@ scaffold <- function(path, use_the_force = F) {
   dir.create(paste0(path,"/includes"))
   dir.create(paste0(path,"/packrat"))
   dir.create(paste0(path,"/tools"))
+  dir.create(paste0(path,"/reports"))
+  dir.create(paste0(path,"/results"))
+
   file.create(paste0(path, "/tools/generate_data_snapshot.R"))
   file.create(paste0(path, "/includes/loader.R"))
   file.create(paste0(path, "/includes/functions.R"))
   file.create(paste0(path, "/includes/libraries.R"))
   file.create(paste0(path, "/includes/data.R"))
+
 
   loader_file <- file.info(paste0(path, "/includes/loader.R"))
 
