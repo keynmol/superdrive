@@ -1,0 +1,10 @@
+Package: pinky
+Type: Package
+Title: Help your brain create reproducible environments for your research.
+Version: 0.1
+Date: 2015-03-28
+Author: Anton Sviridov
+Maintainer: Anton Sviridov <keynmol@gmail.com>
+Description: More about what it does (maybe more than one line)
+License: MIT
+LazyData: TRUE
