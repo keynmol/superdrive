@@ -46,7 +46,7 @@ scaffold <- function(path, use_the_force = F) {
   snapshot_generator_file <- file.info(paste0(path, "/tools/generate_data_snapshot.R"))
   if(snapshot_generator_file$size == 0 || use_the_force){
     generator <- file(paste0(path, "/tools/generate_data_snapshot.R"))
-    writeLines(c("## LOADER", 'source("includes/loader.R")', "## LOAD USER FUNCTIONS", 'save.image("snapshot.Rdata")'), con = generator)
+    writeLines(c("## LOADER", 'DONT_USE_SNAPSHOT <- ', 'source("includes/loader.R")', "## LOAD USER FUNCTIONS", 'save.image("snapshot.Rdata")'), con = generator)
   } else{
     warning("includes/generate_data_snapshot.R in target project was not empty, pinky tried to overwrite it but we stopped him")
   }
