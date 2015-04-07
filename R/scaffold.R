@@ -53,6 +53,9 @@ scaffold <- function(path, use_the_force = F) {
                       "## SAVE DATA SNAPSHOT", 'save.image("snapshot.Rdata")')
                     )
 
+  check_and_write(paste0(path, "/.gitignore"),
+                    c("packrat/lib*/", "packrat/src/", "*.Rdata")
+                    )
 
   packrat::init(project = path)
 }
