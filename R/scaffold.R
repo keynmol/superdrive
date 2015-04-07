@@ -13,6 +13,7 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
+
 scaffold <- function(path, use_the_force = F) {
   dir.create(paste0(path,"/data"))
   dir.create(paste0(path,"/includes"))
@@ -28,33 +29,30 @@ scaffold <- function(path, use_the_force = F) {
   file.create(paste0(path, "/includes/data.R"))
 
 
-  loader_file <- file.info(paste0(path, "/includes/loader.R"))
-
-  if(loader_file$size == 0 || use_the_force){
-    loader <- file(paste0(path, "/includes/loader.R"))
-    writeLines(c("## LOAD LIBRARIES", 'source("includes/libraries.R")', "## LOAD USER FUNCTIONS", 'source("includes/functions.R")', "## LOAD DATA", 'source("includes/data.R")'), con = loader)
-  } else{
-    warning("includes/loader.R in target project was not empty, pinky tried to overwrite it but we stopped him")
+  check_and_write <- function(path, lines){
+    if(file.info(path)$size == 0 || use_the_force){
+      loader <- file(path)
+      writeLines(lines, con = loader)
+    } else{
+      warning(paste(path, "in target project was not empty, pinky tried to overwrite it but we stopped him"))
+    }
   }
 
+  check_and_write(paste0(path, "/includes/loader.R"),
+                  c("## LOAD LIBRARIES", 'source("includes/libraries.R")', 
+                    "## LOAD USER FUNCTIONS", 'source("includes/functions.R")', 
+                    "## LOAD DATA", 'source("includes/data.R")')
+                  )
 
-  libraries_file <- file.info(paste0(path, "/includes/libraries.R"))
+  check_and_write(paste0(path, "/includes/libraries.R"),
+                  c("library(pinky)")
+                  )
 
-  if(libraries_file$size == 0 || use_the_force){
-    libraries <- file(paste0(path, "/includes/libraries.R"))
-    writeLines(c("library(pinky)"), con = libraries)
-  } else{
-    warning("includes/libraries.R in target project was not empty, pinky tried to overwrite it but we stopped him")
-  }
+  check_and_write(paste0(path, "/tools/generate_data_snapshot.R"),
+                    c("## LOADER", 'DONT_USE_SNAPSHOT <- ', 'source("includes/loader.R")', 
+                      "## SAVE DATA SNAPSHOT", 'save.image("snapshot.Rdata")')
+                    )
 
-  snapshot_generator_file <- file.info(paste0(path, "/tools/generate_data_snapshot.R"))
-  if(snapshot_generator_file$size == 0 || use_the_force){
-    generator <- file(paste0(path, "/tools/generate_data_snapshot.R"))
-    writeLines(c("## LOADER", 'DONT_USE_SNAPSHOT <- ', 'source("includes/loader.R")', "## LOAD USER FUNCTIONS", 'save.image("snapshot.Rdata")'), con = generator)
-  } else{
-    warning("includes/generate_data_snapshot.R in target project was not empty, pinky tried to overwrite it but we stopped him")
-  }
 
-  old_folder <- getwd()
   packrat::init(project = path)
 }
